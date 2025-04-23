@@ -1,0 +1,4 @@
+dbt-oracle
+google-cloud-secret-manager
+pandas
+oracledb

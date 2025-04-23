@@ -1,0 +1,25 @@
+version: 2
+
+sources:
+  - name: dvh_fam_bt
+    schema: dvh_fam_bt
+    tables:
+      - name : fak_bt_mottaker_2022
+        description : 'Tester kommentar på tabell fra source'
+      - name : fam_bt_mottaker
+        description : 'Tester kommentar på tabell fra source'
+  - name: dt_person
+    schema: dt_person
+    tables:
+      - name : dim_person
+  - name: dt_kodeverk
+    schema: dt_kodeverk
+    tables:
+      - name : dim_geografi
+
+models:
+  - name: dvh_fam_bt
+    schema: dvh_fam_bt
+    tables:
+      - name : fak_bt_mottaker_2022
+        description : 'Tester kommentar på tabell fra model'
