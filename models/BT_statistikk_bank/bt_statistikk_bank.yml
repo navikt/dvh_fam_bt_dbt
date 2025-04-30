@@ -25,6 +25,8 @@ sources:
 
       - name: agg_statistikk_bank_kjonn_alder_fylke
 
+      - name: stg_fak_statistikk_bank_mottaker
+
   - name: bt_statistikk_bank_dt_kodeverk
     schema: dt_kodeverk
     description: 'Dimensjons data'
