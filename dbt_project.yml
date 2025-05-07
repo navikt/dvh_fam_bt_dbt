@@ -2,7 +2,7 @@
 # Name your project! Project names should contain only lowercase characters
 # and underscores. A good package name should reflect your organization's
 # name or the intended use of these models
-name: 'dvh_familie'
+name: 'dvh_fam_bt_dbt'
 version: '1.0.0'
 config-version: 2
 
@@ -15,7 +15,7 @@ vars:
     pp_omp_periode:
     pp_omp_max_vedtaksperiode:
 
-profile: 'dvh_familie'
+profile: 'dvh_fam_bt_dbt'
 
 # These configurations specify where dbt should look for different types of files.
 # The `model-paths` config, for example, states that models in this project can be
@@ -57,14 +57,7 @@ quoting:
   #- "grant select, delete, update, insert, read on fam_ef_vedtak_arena to DVH_FAM_AIRFLOW"
 
 models:
-  +persist_docs:
-    relation: true
-    columns: true
-  #post-hook: 'grant select, read on {{ this }} to DVH_FAM_AIRFLOW'
-  dvh_familie:
-    marts:
-      +materialized: view
-    staging:
-      +materialized: view
-    KS_transformasjon:
+  dvh_fam_bt_dbt:
+    # Config indicated by + and applies to all files under models/example/
+    example:
       +materialized: view
