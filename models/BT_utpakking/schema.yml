@@ -1,7 +1,7 @@
 version: 2
 
 sources:
-  - name: arena_stonad
+  - name: dimensjon_dt_p
     description: ''
     schema: dt_p
     tables:
@@ -30,7 +30,7 @@ sources:
       - name: fak_vilkaar_vurdering
         description: ''
 
-  - name: dt_person_arena
+  - name: dimensjon_dt_person
     schema: dt_person
     tables:
       - name: dim_person_kontaktinfo
@@ -49,53 +49,11 @@ sources:
       - name: fam_bt_fagsak
         description: 'inneholder vedtaks informasjon'
 
-  - name: fam_ks
-    schema: dvh_fam_ks
-    tables:
-      - name: fam_ks_meta_data
-        description: 'inneholder meta_data for kontantstøtte'
-      - name: fam_ks_fagsak
-        description: 'inneholder vedtaks data for kontantstøtte'
-      - name: ks_meta_data_test
-        description: 'tabellen inneholder en del av data som ligger i fam_ks_meta_data bare for å teste incremental tabell og snapshots'
-
   - name: kode_verk
     schema: dt_kodeverk
     tables:
      - name: dim_alder
      - name: dim_tid
-
-  - name: fam_ef
-    schema: dvh_fam_ef
-    tables:
-      - name: fam_ef_meta_data
-        description: 'inneholder meta_data for ensligforsørger'
-      - name: fam_ef_fagsak
-        description: 'inneholder vedtaksinformasjon'
-      - name: fam_ts_meta_data
-        description: 'inneholder meta_data for tilleggsstønader'
-      - name: fam_ts_fagsak
-        description: 'inneholder vedtaksinformasjon'
-      - name: FAM_TS_BARN
-        description: 'innholder informasjon om barna som kommer i vedtaket'
-
-  - name: fam_pp
-    schema: dvh_fam_pp
-    tables:
-      - name: fam_pp_meta_data
-        description: 'inneholder meta_data for PP, OMP, PPN'
-      - name: fam_pp_fagsak
-        description: 'inneholder vedtaks informasjon'
-      - name: fam_pp_diagnose
-        description: 'inneholder diagnose informasjon'
-
-  - name: fam_fp
-    schema: dvh_fam_fp
-    tables:
-      - name: fam_fp_meta_data
-        description: 'inneholder meta_data for FP'
-      - name: json_fam_fp_fagsak
-        description: 'inneholder fagsak info for FP'
 
   - name: ur
     schema: dvh_ur

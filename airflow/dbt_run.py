@@ -89,5 +89,3 @@ if __name__ == "__main__":
     except subprocess.CalledProcessError as err:
         raise Exception(logger.error(dbt_logg(project_path)),
                        err.stdout.decode("utf-8"))
-    
-
