@@ -27,6 +27,8 @@ sources:
 
       - name: stg_fak_statistikk_bank_mottaker
 
+      - name: stg_fak_statistikk_bank_barn
+
   - name: bt_statistikk_bank_dt_kodeverk
     schema: dt_kodeverk
     description: 'Dimensjons data'
@@ -35,3 +37,9 @@ sources:
       - name: dim_geografi_fylke
       - name: dim_geografi
       - name: dim_kjonn
+
+  - name: bt_statistikk_bank_dt_person
+    schema: dt_person
+    description: 'Dimensjons data'
+    tables:
+      - name: dim_person
