@@ -27,13 +27,13 @@ barn_periode as (
        ,periode.aar_kvartal
        ,periode.kvartal
        ,periode.kvartal_besk
+       ,max(case when barn.fkb_person1 = barn.fk_person1 then 1 else 0 end) as barn_selv_mottaker_flagg
     from {{ source('bt_statistikk_bank_dvh_fam_bt', 'fam_bt_barn') }} barn
 
     join {{ source('bt_statistikk_bank_dvh_fam_bt', 'dim_bt_periode') }} periode
     on barn.stat_aarmnd = to_char(periode.siste_dato_i_perioden, 'yyyymm') --Siste måned i kvartal
 
     where barn.gyldig_flagg = 1
-    and barn.fkb_person1 != barn.fk_person1 --Barn selv mottar barnetrygd telles ikke
 
     group by
         barn.stat_aarmnd
@@ -75,6 +75,7 @@ barn_ukjent_gtverdi as
        ,barn_fylkenr.kvartal_besk
        ,barn_fylkenr.stat_aarmnd
        ,barn_fylkenr.gt_verdi
+       ,barn_fylkenr.barn_selv_mottaker_flagg
        ,dim_land.land_iso_3_kode
        ,case when dim_land.land_iso_3_kode is not null then '98'
              else gt_verdi.navarende_fylke_nr
@@ -113,6 +114,7 @@ barn_fylkenr_alle as
        ,kvartal_besk
        ,stat_aarmnd
        ,navarende_fylke_nr
+       ,barn_selv_mottaker_flagg
     from barn_fylkenr
     where navarende_fylke_nr != 'Ukjent' or navarende_fylke_nr is null
 
@@ -125,6 +127,7 @@ barn_fylkenr_alle as
        ,kvartal_besk
        ,stat_aarmnd
        ,navarende_fylke_nr
+       ,barn_selv_mottaker_flagg
     from barn_ukjent_gtverdi
 )
 --select * from barn_alle;
