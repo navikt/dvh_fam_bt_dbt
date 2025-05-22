@@ -78,6 +78,7 @@ mottaker_ukjent_gtverdi as
        ,mottaker_fylkenr.alder
        ,mottaker_fylkenr.kjonn
        ,mottaker_fylkenr.mottaker_gt_verdi
+       ,mottaker_fylkenr.statusk
        ,dim_land.land_iso_3_kode
        ,case when dim_land.land_iso_3_kode is not null then '98'
              else gt_verdi.navarende_fylke_nr
@@ -119,6 +120,7 @@ mottaker_fylkenr_alle as
        ,alder
        ,kjonn
        ,navarende_fylke_nr
+       ,statusk
     from mottaker_fylkenr
     where navarende_fylke_nr != 'Ukjent' or navarende_fylke_nr is null
 
@@ -134,6 +136,7 @@ mottaker_fylkenr_alle as
        ,alder
        ,kjonn
        ,navarende_fylke_nr
+       ,statusk
     from mottaker_ukjent_gtverdi
 )
 --select * from mottaker_alle;

@@ -1,6 +1,6 @@
 {{
     config(
-        materialized='view'
+        materialized='table'
     )
 }}
 
@@ -11,7 +11,7 @@ with barn as (
 )
 ,
 
---Returnere full liste med alle fylke og alle periode. Dette er PX format spesifikk.
+--Returnere full liste med alle fylker og alle perioder. Dette er PX format spesifikk.
 full_liste as (
     select
         fylke.*
@@ -31,83 +31,74 @@ agg as (
        ,full_liste.nåværende_fylke_nr_navn
        ,full_liste.nåværende_fylkenavn
        ,full_liste.fylke_nivaa
-       ,count(distinct barn.fkb_person1) as antall
+       ,case when count(distinct barn.fkb_person1) < 10 then
+                  round(count(distinct barn.fkb_person1)+5, -1) --Prikking: Round antall mindre enn 5 oppover til nærmeste tier
+             else count(distinct barn.fkb_person1)
+        end antall
     from full_liste
 
     left outer join barn
     on full_liste.aar_kvartal = barn.aar_kvartal
-    and (
-            (full_liste.nåværende_fylkenavn != 'I alt'
-              and full_liste.nåværende_fylke_nr_navn = barn.nåværende_fylke_nr_navn
-            )
-            or
-            (full_liste.nåværende_fylkenavn = 'I alt'
-            )
-        )
+    and full_liste.nåværende_fylke_nr_navn = barn.nåværende_fylke_nr_navn
+
+    where full_liste.nåværende_fylkenavn != 'I alt'
 
     group by
         full_liste.aar_kvartal
        ,full_liste.nåværende_fylke_nr_navn
        ,full_liste.nåværende_fylkenavn
+       ,full_liste.fylke_nivaa
 )
 ,
 
---Prikking: Round antall mindre enn 5 oppover til nærmeste tier
---Tester prikking
-prikking as (
+--nåværende_fylkenavn = 'I alt'
+fylke_i_alt as (
+    select
+        full_liste.aar_kvartal
+       ,full_liste.nåværende_fylke_nr_navn
+       ,full_liste.nåværende_fylkenavn
+       ,full_liste.fylke_nivaa
+       ,sum(agg.antall) as antall
+    from full_liste
+
+    left outer join agg
+    on full_liste.aar_kvartal = agg.aar_kvartal
+
+    where full_liste.nåværende_fylkenavn = 'I alt'
+
+    group by
+        full_liste.aar_kvartal
+       ,full_liste.nåværende_fylke_nr_navn
+       ,full_liste.nåværende_fylkenavn
+       ,full_liste.fylke_nivaa
+)
+,
+
+alle as (
     select
         agg.aar_kvartal
        ,agg.nåværende_fylke_nr_navn
        ,agg.antall
-       ,agg.fylke_nivaa
-       ,round(agg.antall+5, -1) as antall_prikking
-
-       --Nivå opp
-       ,nivaa_opp.nåværende_fylke_nr_navn nåværende_fylke_nr_navn_nivaa_opp
-       ,nivaa_opp.antall as antall_nivaa_opp
-       ,nivaa_opp.fylke_nivaa fylke_nivaa_nivaa_opp
-       ,round(nivaa_opp.antall+5, -1)as antall_prikking_nivaa_opp
+       ,case when fylke_i_alt.antall != 0 then round(agg.antall/fylke_i_alt.antall*100,1) else 0 end prosent
     from agg
-
-    join agg nivaa_opp
-    on agg.aar_kvartal = nivaa_opp.aar_kvartal
-    and agg.fylke_nivaa < nivaa_opp.fylke_nivaa
-
-    where agg.antall between 1 and 4530
-),
-
-prikking_liste as
-(
-    select distinct
-           aar_kvartal
-          ,nåværende_fylke_nr_navn
-          ,antall
-          ,fylke_nivaa
-          ,antall_prikking
-    from prikking
+    join fylke_i_alt
+    on agg.aar_kvartal = fylke_i_alt.aar_kvartal
 
     union all
-    select distinct
-           aar_kvartal
-          ,nåværende_fylke_nr_navn_nivaa_opp
-          ,antall_nivaa_opp
-          ,fylke_nivaa_nivaa_opp
-          ,antall_prikking_nivaa_opp
-    from prikking
+    select
+        aar_kvartal
+       ,nåværende_fylke_nr_navn
+       ,antall
+       ,100 as prosent
+    from fylke_i_alt
 )
---select * from prikking_liste where aar_kvartal = 202501;
-
 select
-    substr(agg.aar_kvartal,1,4)||'K'||substr(agg.aar_kvartal,6,1) as aar_kvartal
-   ,agg.nåværende_fylke_nr_navn
-   ,coalesce(prikking_liste.antall_prikking, agg.antall) as antall
-   ,agg.prosent
+    substr(aar_kvartal,1,4)||'K'||substr(aar_kvartal,6,1) as aar_kvartal
+   ,nåværende_fylke_nr_navn
+   ,antall
+   ,prosent
    ,localtimestamp as lastet_dato
-from agg
-
-left join prikking_liste
-on agg.aar_kvartal = prikking_liste.aar_kvartal
-and agg.nåværende_fylke_nr_navn = prikking_liste.nåværende_fylke_nr_navn
+from alle
 
 --Last opp kun ny periode siden siste periode fra tabellen
 {% if is_incremental() %}
