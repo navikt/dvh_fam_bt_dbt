@@ -94,7 +94,7 @@ alle as (
 )
 select
     substr(aar_kvartal,1,4)||'K'||substr(aar_kvartal,6,1) as aar_kvartal
-   ,nåværende_fylke_nr_navn
+   ,nåværende_fylke_nr_navn as fylke
    ,antall
    ,prosent
    ,localtimestamp as lastet_dato
