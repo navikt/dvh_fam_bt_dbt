@@ -8,6 +8,7 @@ with mottaker as (
     select *
     from {{ source('bt_statistikk_bank_dvh_fam_bt','stg_fak_statistikk_bank_mottaker') }}
     where barn_selv_mottaker_flagg = 0 --Barn selv mottar barnetrygd telles ikke
+    and belop > 0 -- Etterbetalinger telles ikke
 )
 ,
 

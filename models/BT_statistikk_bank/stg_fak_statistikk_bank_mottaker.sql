@@ -24,6 +24,7 @@ mottaker_periode as (
        ,periode.kvartal
        ,periode.kvartal_besk
        ,mottaker.*
+       ,dim_alder.alder as alder_dim_alder
        ,case when barn.fk_person1 is not null then 1 else 0 end barn_selv_mottaker_flagg
     from {{ source('bt_statistikk_bank_dvh_fam_bt', 'fam_bt_mottaker') }} mottaker
 
@@ -41,11 +42,13 @@ mottaker_periode as (
     join {{ source('bt_statistikk_bank_dvh_fam_bt', 'dim_bt_periode') }} periode
     on mottaker.stat_aarmnd = to_char(periode.siste_dato_i_perioden, 'yyyymm') --Siste måned i kvartal
 
+    left join {{ source('bt_statistikk_bank_dt_kodeverk', 'dim_alder') }} dim_alder
+    on mottaker.fk_dim_alder = dim_alder.pk_dim_alder
+
     where ((mottaker.statusk != 4 and mottaker.stat_aarmnd <= 202212) --Publisert statistikk(nav.no) til og med 2022, har filtrert vekk Institusjon(statusk=4).
             or mottaker.stat_aarmnd >= 202301 --Statistikk fra og med 2023, inkluderer Institusjon.
           )
     and mottaker.gyldig_flagg = 1
-    and mottaker.belop > 0 -- Etterbetalinger telles ikke
 )
 ,
 
@@ -75,10 +78,16 @@ mottaker_ukjent_gtverdi as
        ,mottaker_fylkenr.kvartal_besk
        ,mottaker_fylkenr.stat_aarmnd
        ,mottaker_fylkenr.barn_selv_mottaker_flagg
-       ,mottaker_fylkenr.alder
+       ,coalesce(mottaker_fylkenr.alder_dim_alder, mottaker_fylkenr.alder) as alder --I tilfelle fk_dim_alder ikke finnes
        ,mottaker_fylkenr.kjonn
        ,mottaker_fylkenr.mottaker_gt_verdi
+       ,mottaker_fylkenr.belop
+
+       --Utvidet info
        ,mottaker_fylkenr.statusk
+       ,mottaker_fylkenr.belop_utvidet
+       ,mottaker_fylkenr.belop_smabarnstillegg
+
        ,dim_land.land_iso_3_kode
        ,case when dim_land.land_iso_3_kode is not null then '98'
              else gt_verdi.navarende_fylke_nr
@@ -117,10 +126,15 @@ mottaker_fylkenr_alle as
        ,kvartal_besk
        ,stat_aarmnd
        ,barn_selv_mottaker_flagg
-       ,alder
+       ,coalesce(alder_dim_alder, alder) as alder --I tilfelle fk_dim_alder ikke finnes
        ,kjonn
        ,navarende_fylke_nr
+       ,belop
+
+       --Utvidet info
        ,statusk
+       ,belop_utvidet
+       ,belop_smabarnstillegg
     from mottaker_fylkenr
     where navarende_fylke_nr != 'Ukjent' or navarende_fylke_nr is null
 
@@ -136,7 +150,12 @@ mottaker_fylkenr_alle as
        ,alder
        ,kjonn
        ,navarende_fylke_nr
+       ,belop
+
+       --Utvidet info
        ,statusk
+       ,belop_utvidet
+       ,belop_smabarnstillegg
     from mottaker_ukjent_gtverdi
 )
 --select * from mottaker_alle;
@@ -164,7 +183,11 @@ navarende_fylke_kjonn_alder as (
 
     from mottaker_navarende_fylke mottaker
 
-    left join {{ source('bt_statistikk_bank_dvh_fam_bt', 'dim_bt_alder_gruppe') }} alder_gruppe
+    left join
+    (
+        select distinct alder_fra_og_med, alder_til_og_med, alder_gruppe_besk
+        from {{ source('bt_statistikk_bank_dvh_fam_bt', 'dim_bt_alder_gruppe') }}
+    ) alder_gruppe
     on mottaker.alder between alder_gruppe.alder_fra_og_med and alder_gruppe.alder_til_og_med
 
     left join {{ source('bt_statistikk_bank_dvh_fam_bt', 'dim_bt_kjonn') }} kjonn

@@ -37,6 +37,7 @@ sources:
       - name: dim_geografi_fylke
       - name: dim_geografi
       - name: dim_kjonn
+      - name: dim_alder
 
   - name: bt_statistikk_bank_dt_person
     schema: dt_person

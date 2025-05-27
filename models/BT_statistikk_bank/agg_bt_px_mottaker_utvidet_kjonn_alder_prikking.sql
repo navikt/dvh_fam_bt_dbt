@@ -7,8 +7,7 @@
 with mottaker as (
     select *
     from {{ source('bt_statistikk_bank_dvh_fam_bt','stg_fak_statistikk_bank_mottaker') }}
-    where barn_selv_mottaker_flagg = 0 --Barn selv mottar barnetrygd telles ikke
-    and statusk in (2,3) --Utvidet barnetrygd
+    where belop_utvidet > 0 --Etterbetalt telles ikke
 )
 ,
 
@@ -17,14 +16,22 @@ full_liste as (
     select
         kjonn.kjonn_besk
        ,kjonn.kjonn_nivaa
+       ,alder_gruppe.alder_fra_og_med
+       ,alder_gruppe.alder_til_og_med
        ,alder_gruppe.alder_gruppe_besk
-       ,alder_gruppe.alder_gruppe_nivaa
        ,periode.aar_kvartal
        ,periode.forste_dato_i_perioden
        ,periode.siste_dato_i_perioden
     from {{ source('bt_statistikk_bank_dvh_fam_bt','dim_bt_kjonn') }} kjonn
 
-    full outer join {{ source('bt_statistikk_bank_dvh_fam_bt','dim_bt_alder_gruppe') }} alder_gruppe
+    full outer join
+    (
+        select utvidet_alder_gruppe_besk as alder_gruppe_besk
+              ,min(alder_fra_og_med) as alder_fra_og_med
+              ,max(alder_til_og_med) as alder_til_og_med
+        from {{ source('bt_statistikk_bank_dvh_fam_bt', 'dim_bt_alder_gruppe') }}
+        group by utvidet_alder_gruppe_besk
+    ) alder_gruppe
     on 1 = 1
 
     full outer join {{ source('bt_statistikk_bank_dvh_fam_bt', 'dim_bt_periode') }} periode
@@ -39,7 +46,6 @@ agg as (
        ,full_liste.kjonn_besk
        ,full_liste.kjonn_nivaa
        ,full_liste.alder_gruppe_besk
-       ,full_liste.alder_gruppe_nivaa
        --,count(distinct fk_person1) as antall
        ,case when count(distinct fk_person1) < 10 then
                   round(count(distinct fk_person1)+5, -1) --Prikking: Round antall mindre enn 5 oppover til nærmeste tier
@@ -50,17 +56,16 @@ agg as (
     left outer join mottaker
     on full_liste.aar_kvartal = mottaker.aar_kvartal
     and full_liste.kjonn_besk = mottaker.kjonn_besk
-    and full_liste.alder_gruppe_besk = mottaker.alder_gruppe_besk
+    and mottaker.alder between full_liste.alder_fra_og_med and full_liste.alder_til_og_med
 
     where full_liste.kjonn_besk != 'I alt'
-    and full_liste.alder_gruppe_besk != '00 I alt'
+    and full_liste.alder_gruppe_besk != 'I alt'
 
     group by
         full_liste.aar_kvartal
        ,full_liste.kjonn_besk
        ,full_liste.kjonn_nivaa
        ,full_liste.alder_gruppe_besk
-       ,full_liste.alder_gruppe_nivaa
 )
 ,
 
@@ -71,7 +76,6 @@ kjonn_i_alt as (
        ,full_liste.kjonn_besk
        ,full_liste.kjonn_nivaa
        ,full_liste.alder_gruppe_besk
-       ,full_liste.alder_gruppe_nivaa
        ,sum(agg.antall) as antall
     from full_liste
 
@@ -80,25 +84,23 @@ kjonn_i_alt as (
     and full_liste.alder_gruppe_besk = agg.alder_gruppe_besk
 
     where full_liste.kjonn_besk = 'I alt'
-    and full_liste.alder_gruppe_besk != '00 I alt'
+    and full_liste.alder_gruppe_besk != 'I alt'
 
     group by
         full_liste.aar_kvartal
        ,full_liste.kjonn_besk
        ,full_liste.kjonn_nivaa
        ,full_liste.alder_gruppe_besk
-       ,full_liste.alder_gruppe_nivaa
 )
 ,
 
---alder_gruppe_besk = '00 I alt'
+--alder_gruppe_besk = 'I alt'
 aldersgruppe_i_alt as (
     select
         full_liste.aar_kvartal
        ,full_liste.kjonn_besk
        ,full_liste.kjonn_nivaa
        ,full_liste.alder_gruppe_besk
-       ,full_liste.alder_gruppe_nivaa
        ,sum(agg.antall) as antall
     from full_liste
 
@@ -106,7 +108,7 @@ aldersgruppe_i_alt as (
     on full_liste.aar_kvartal = agg.aar_kvartal
     and full_liste.kjonn_besk = agg.kjonn_besk
 
-    where full_liste.alder_gruppe_besk = '00 I alt'
+    where full_liste.alder_gruppe_besk = 'I alt'
     and full_liste.kjonn_besk != 'I alt'
 
     group by
@@ -114,25 +116,23 @@ aldersgruppe_i_alt as (
        ,full_liste.kjonn_besk
        ,full_liste.kjonn_nivaa
        ,full_liste.alder_gruppe_besk
-       ,full_liste.alder_gruppe_nivaa
 )
 ,
 
---kjonn_besk = 'I alt' og alder_gruppe_besk = '00 I alt'
+--kjonn_besk = 'I alt' og alder_gruppe_besk = 'I alt'
 i_alt as (
     select
         full_liste.aar_kvartal
        ,full_liste.kjonn_besk
        ,full_liste.kjonn_nivaa
        ,full_liste.alder_gruppe_besk
-       ,full_liste.alder_gruppe_nivaa
        ,sum(agg.antall) as antall
     from full_liste
 
     left outer join agg
     on full_liste.aar_kvartal = agg.aar_kvartal
 
-    where full_liste.alder_gruppe_besk = '00 I alt'
+    where full_liste.alder_gruppe_besk = 'I alt'
     and full_liste.kjonn_besk = 'I alt'
 
     group by
@@ -140,7 +140,6 @@ i_alt as (
        ,full_liste.kjonn_besk
        ,full_liste.kjonn_nivaa
        ,full_liste.alder_gruppe_besk
-       ,full_liste.alder_gruppe_nivaa
 )
 ,
 
@@ -150,7 +149,6 @@ alle as (
        ,agg.kjonn_besk
        ,agg.kjonn_nivaa
        ,agg.alder_gruppe_besk
-       ,agg.alder_gruppe_nivaa
        ,agg.antall
        ,case when aldersgruppe_i_alt.antall != 0 then round(agg.antall/aldersgruppe_i_alt.antall*100,1) else 0 end prosent
     from agg
@@ -164,7 +162,6 @@ alle as (
        ,kjonn_i_alt.kjonn_besk
        ,kjonn_i_alt.kjonn_nivaa
        ,kjonn_i_alt.alder_gruppe_besk
-       ,kjonn_i_alt.alder_gruppe_nivaa
        ,kjonn_i_alt.antall
        ,case when i_alt.antall != 0 then round(kjonn_i_alt.antall/i_alt.antall*100,1) else 0 end prosent
     from kjonn_i_alt
@@ -177,7 +174,6 @@ alle as (
        ,kjonn_besk
        ,kjonn_nivaa
        ,alder_gruppe_besk
-       ,alder_gruppe_nivaa
        ,antall
        ,100 as prosent
     from aldersgruppe_i_alt
@@ -188,7 +184,6 @@ alle as (
        ,kjonn_besk
        ,kjonn_nivaa
        ,alder_gruppe_besk
-       ,alder_gruppe_nivaa
        ,antall
        ,100 as prosent
     from i_alt
