@@ -1,0 +1,13 @@
+comment on table dvh_fam_bt.fam_bt_kompetanse_perioder is '#NAVN KompetansePerioder #INNHOLD Tabellen inneholder barnetrygd vedtaksinformasjon.';
+comment on column dvh_fam_bt.fam_bt_kompetanse_perioder.pk_bt_kompetanse_perioder is '#NAVN Primær nøkkel #INNHOLD Primær nøkkel, en unik id for hver rad (kompetanseperiode fra vedtaket), autogenerert av dvh_fambt_kafka.hibernate_sequence.nextval.';
+comment on column dvh_fam_bt.fam_bt_kompetanse_perioder.fk_bt_fagsak is '#NAVN Fremmednøkkel #INNHOLD Fremmednøkkel til FAM_BT_FAGSAK.';
+comment on column dvh_fam_bt.fam_bt_kompetanse_perioder.kafka_offset is '#NAVN KafkaOffset #INNHOLD Kafka offset av kafka topic-en hvor jsonmelding til vedtaket kommer fra.';
+comment on column dvh_fam_bt.fam_bt_kompetanse_perioder.lastet_dato is '#NAVN Lastet dato #INNHOLD Lastet dato data ble pakket ut av DBT.';
+comment on column dvh_fam_bt.fam_bt_kompetanse_perioder.fom is '#NAVN FOM #INNHOLD Kompetanse periode fra dato.';
+comment on column dvh_fam_bt.fam_bt_kompetanse_perioder.tom is '#NAVN TOM #INNHOLD Kompetanse periode til dato';
+comment on column dvh_fam_bt.fam_bt_kompetanse_perioder.sokersaktivitet is '#NAVN Søkers aktivitet #INNHOLD Søkers aktivitet i søkt periode.';
+comment on column dvh_fam_bt.fam_bt_kompetanse_perioder.annenforelder_aktivitet is '#NAVN Annenforelders aktivitet #INNHOLD Annenforelders aktivitet i søkt periode.';
+comment on column dvh_fam_bt.fam_bt_kompetanse_perioder.annenforelder_aktivitetsland is '#NAVN Annenforelders aktivitetsland #INNHOLD Annenforelders aktivitetsland i søkt periode.';
+comment on column dvh_fam_bt.fam_bt_kompetanse_perioder.kompetanse_resultat is '#NAVN KompetanseResultat #INNHOLD Kan være NORGE_ER_PRIMÆRLAND, NORGE_ER_SEKUNDÆRLAND eller TO_PRIMÆRLAND.';
+comment on column dvh_fam_bt.fam_bt_kompetanse_perioder.barnets_bostedsland is '#NAVN Barnets bostedsland #INNHOLD Barnets bostedsland i søkt periode.';
+comment on column dvh_fam_bt.fam_bt_kompetanse_perioder.sokers_aktivitetsland is '#NAVN Søkers aktivitetsland #INNHOLD Søkers aktivitetsland i søkt periode.';

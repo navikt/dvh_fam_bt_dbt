@@ -1,0 +1,5 @@
+comment on table dvh_fam_bt.fam_bt_statsborgerskap is '#NAVN Statsborgerskap #INNHOLD Tabellen inneholder barnetrygd vedtaksinformasjon.';
+comment on column dvh_fam_bt.fam_bt_statsborgerskap.pk_statsborgerskap is '#NAVN Primær nøkkel #INNHOLD Primær nøkkel, en unik id for hver rad (mottaker eller barn fra vedtaket), autogenerert av dvh_fambt_kafka.hibernate_sequence.nextval.';
+comment on column dvh_fam_bt.fam_bt_statsborgerskap.fk_bt_person is '#NAVN Fremmednøkkel #INNHOLD Fremmednøkkel til FAM_BT_PERSON.';
+comment on column dvh_fam_bt.fam_bt_statsborgerskap.lastet_dato is '#NAVN Lastet dato #INNHOLD Lastet dato data ble pakket ut av DBT.';
+comment on column dvh_fam_bt.fam_bt_statsborgerskap.statsborgerskap is '#NAVN Statsborgerskap #INNHOLD Info om statsborgerskap av søker eller barn knyttet til ytelse.';

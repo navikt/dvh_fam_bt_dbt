@@ -1,0 +1,11 @@
+comment on table dvh_fam_bt.fam_bt_utbet_det is '#NAVN Utbetalings detaljer #INNHOLD Tabellen inneholder barnetrygd vedtaksinformasjon.';
+comment on column dvh_fam_bt.fam_bt_utbet_det.pk_bt_utbet_det is '#NAVN Primær nøkkel #INNHOLD Primær nøkkel, en unik id for hver rad (mottaker eller barn fra hver utbetalingsperiode), autogenerert av dvh_fambt_kafka.hibernate_sequence.nextval.';
+comment on column dvh_fam_bt.fam_bt_utbet_det.utbetalt_pr_mnd is '#NAVN Utbetalt per mnd #INNHOLD Utbetalt månedsbeløp.';
+comment on column dvh_fam_bt.fam_bt_utbet_det.fk_bt_person is '#NAVN Fremmednøkkel #INNHOLD Fremmednøkkel til FAM_BT_PERSON. Enten mottaker eller barn knyttet til ytelse.';
+comment on column dvh_fam_bt.fam_bt_utbet_det.fk_bt_utbetaling is '#NAVN Fremmednøkkel #INNHOLD Fremmednøkkel til FAM_BT_UTBETALING.';
+comment on column dvh_fam_bt.fam_bt_utbet_det.kafka_offset is '#NAVN KafkaOffset #INNHOLD Kafka offset av kafka topic-en hvor jsonmelding til vedtaket kommer fra.';
+comment on column dvh_fam_bt.fam_bt_utbet_det.behandlings_id is '#NAVN BehandlingsId #INNHOLD Barnetrygd behandlings_id fra vedtaksystem. Kan identifisere versjon av fagsak.';
+comment on column dvh_fam_bt.fam_bt_utbet_det.lastet_dato is '#NAVN Lastet dato #INNHOLD Lastet dato data ble pakket ut av DBT.';
+comment on column dvh_fam_bt.fam_bt_utbet_det.klassekode is '#NAVN Klassekode #INNHOLD Samsvarer med ytelse type. BATR=Ordinær barnetrygd, BAUTV-OP=Utvidet barnetrygd, BATRSMA=Småbarnstillegg av utvidet barnetrygd.';
+comment on column dvh_fam_bt.fam_bt_utbet_det.delytelse_id is '#NAVN DelytelseId #INNHOLD Delytelse_id fra vedtaksystem. Skulle være 1:1 mapping mot barn eller mottaker.';
+comment on column dvh_fam_bt.fam_bt_utbet_det.ytelse_type is '#NAVN YtelseType #INNHOLD Type av barnetrygd, kan være ORDINÆR_BARNETRYGD, UTVIDET_BARNETRYGD eller SMÅBARNSTILLEGG.';

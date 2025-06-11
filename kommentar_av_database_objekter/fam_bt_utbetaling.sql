@@ -1,0 +1,10 @@
+comment on table dvh_fam_bt.fam_bt_utbetaling is '#NAVN Utbetaling #INNHOLD Tabellen inneholder barnetrygd vedtaksinformasjon.';
+comment on column dvh_fam_bt.fam_bt_utbetaling.pk_bt_utbetaling is '#NAVN Primær nøkkel #INNHOLD Primær nøkkel, en unik id for hver rad (hver utbetalingsperiode fra vedtaket), autogenerert av dvh_fambt_kafka.hibernate_sequence.nextval.';
+comment on column dvh_fam_bt.fam_bt_utbetaling.utbetalt_per_mnd is '#NAVN Utbetalt per mnd #INNHOLD Utbetalt månedsbeløp.';
+comment on column dvh_fam_bt.fam_bt_utbetaling.stønad_fom is '#NAVN Stønads fom #INNHOLD Stønad fra dato.';
+comment on column dvh_fam_bt.fam_bt_utbetaling.stønad_tom is '#NAVN Stønads tom #INNHOLD Stønad til dato.';
+comment on column dvh_fam_bt.fam_bt_utbetaling.fk_bt_fagsak is '#NAVN Fremmednøkkel #INNHOLD Fremmednøkkel til FAM_BT_FAGSAK.';
+comment on column dvh_fam_bt.fam_bt_utbetaling.kafka_offset is '#NAVN KafkaOffset #INNHOLD Kafka offset av kafka topic-en hvor jsonmelding til vedtaket kommer fra.';
+comment on column dvh_fam_bt.fam_bt_utbetaling.behandlings_id is '#NAVN BehandlingsId #INNHOLD Barnetrygd behandlings_id fra vedtaksystem. Kan identifisere versjon av fagsak.';
+comment on column dvh_fam_bt.fam_bt_utbetaling.lastet_dato is '#NAVN Lastet dato #INNHOLD Lastet dato data ble pakket ut av DBT.';
+comment on column dvh_fam_bt.fam_bt_utbetaling.hjemmel is '#NAVN Hjemmel #INNHOLD Ikke implementert.';

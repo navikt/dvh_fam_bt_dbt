@@ -1,0 +1,18 @@
+comment on table dvh_fam_bt.fam_bt_person is '#NAVN Person #INNHOLD Tabellen inneholder barnetrygd vedtaksinformasjon.';
+comment on column dvh_fam_bt.fam_bt_person.pk_bt_person is '#NAVN Primær nøkkel #INNHOLD Primær nøkkel, en unik id for hver rad (mottaker eller barn fra vedtaket), autogenerert av dvh_fambt_kafka.hibernate_sequence.nextval.';
+comment on column dvh_fam_bt.fam_bt_person.annenpart_bostedsland is '#NAVN Annenparts bostedsland #INNHOLD Ikke i bruk.';
+comment on column dvh_fam_bt.fam_bt_person.annenpart_personident is '#NAVN Annenparts personident #INNHOLD Ikke i bruk.';
+comment on column dvh_fam_bt.fam_bt_person.annenpart_statsborgerskap is '#NAVN Annenparts statsborgerskap #INNHOLD Ikke i bruk.';
+comment on column dvh_fam_bt.fam_bt_person.bostedsland is '#NAVN Bostedsland #INNHOLD Bostedsland til søker. Info fra vedtaket.';
+comment on column dvh_fam_bt.fam_bt_person.delingsprosent_omsorg is '#NAVN Delingsprosent av omsorg #INNHOLD Ikke i bruk.';
+comment on column dvh_fam_bt.fam_bt_person.delingsprosent_ytelse is '#NAVN Delingsprosent av ytelse #INNHOLD Delingsprosent av barnetrygd mellom foreldrene, kan være 0(ikke deling) eller 50(50%).';
+comment on column dvh_fam_bt.fam_bt_person.primærland is '#NAVN Primær land #INNHOLD Ikke i bruk.';
+comment on column dvh_fam_bt.fam_bt_person.sekundærland is '#NAVN Sekundær land #INNHOLD Ikke i bruk.';
+comment on column dvh_fam_bt.fam_bt_person.fk_person1 is '#NAVN FK_PERSON1 #INNHOLD DVH sin identifikator for FNR. Mottaker eller barn knyttet til ytelse.';
+comment on column dvh_fam_bt.fam_bt_person.kafka_offset is '#NAVN KafkaOffset #INNHOLD Kafka offset av kafka topic-en hvor jsonmelding til vedtaket kommer fra.';
+comment on column dvh_fam_bt.fam_bt_person.behandlings_id is '#NAVN BehandlingsId #INNHOLD Barnetrygd behandlings_id fra vedtaksystem. Kan identifisere versjon av fagsak.';
+comment on column dvh_fam_bt.fam_bt_person.lastet_dato is '#NAVN Lastet dato #INNHOLD Lastet dato data ble pakket ut av DBT.';
+comment on column dvh_fam_bt.fam_bt_person.oppdatert_dato is '#NAVN Oppdatert dato #INNHOLD Dato data ble oppdatert.';
+comment on column dvh_fam_bt.fam_bt_person.soker_flagg is '#NAVN SøkerFlagg #INNHOLD Indikerer om rekord er knyttet til søker eller barn(under utbetalingsperiode).';
+comment on column dvh_fam_bt.fam_bt_person.person_ident is '#NAVN PersonIdent #INNHOLD PersonIdent for de som mangler fk_person1.';
+comment on column dvh_fam_bt.fam_bt_person.rolle is '#NAVN Rolle #INNHOLD Kan være enten SØKER(fra fagsaks nivå) eller BARN(utbetalings nivå).';

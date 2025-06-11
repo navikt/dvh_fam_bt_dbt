@@ -1,0 +1,5 @@
+comment on table dvh_fam_bt.fam_bt_kompetanse_barn is '#NAVN KompetanseBarn #INNHOLD Tabellen inneholder barnetrygd vedtaksinformasjon.';
+comment on column dvh_fam_bt.fam_bt_kompetanse_barn.pk_bt_kompetanse_barn is '#NAVN Primær nøkkel #INNHOLD Primær nøkkel, en unik id for hver rad (barn i kompetanseperiode), autogenerert av dvh_fambt_kafka.hibernate_sequence.nextval.';
+comment on column dvh_fam_bt.fam_bt_kompetanse_barn.fk_bt_kompetanse_perioder is '#NAVN Fremmednøkkel #INNHOLD Fremmednøkkel til FAM_BT_KOMPETANSE_PERIODER.';
+comment on column dvh_fam_bt.fam_bt_kompetanse_barn.fk_person1 is '#NAVN FK_PERSON1 #INNHOLD DVH sin identifikator for FNR. Barn knyttet til ytelse.';
+comment on column dvh_fam_bt.fam_bt_kompetanse_barn.lastet_dato is '#NAVN Lastet dato #INNHOLD Lastet dato data ble pakket ut av DBT.';
