@@ -37,6 +37,7 @@ agg as (
         full_liste.aar_kvartal
        ,full_liste.nåværende_fylke_nr_navn
        ,full_liste.nåværende_fylkenavn
+       ,full_liste.sortering_rekkefolge as sortering_rekkefolge_fylke
        ,case when count(distinct mottaker.fk_person1) < 10 then
                   round(count(distinct mottaker.fk_person1)+5, -1) --Prikking: Round antall mindre enn 5 oppover til nærmeste tier
              else count(distinct mottaker.fk_person1)
@@ -53,6 +54,7 @@ agg as (
         full_liste.aar_kvartal
        ,full_liste.nåværende_fylke_nr_navn
        ,full_liste.nåværende_fylkenavn
+       ,full_liste.sortering_rekkefolge
 )
 ,
 
@@ -62,6 +64,7 @@ i_alt as (
         full_liste.aar_kvartal
        ,full_liste.nåværende_fylke_nr_navn
        ,full_liste.nåværende_fylkenavn
+       ,full_liste.sortering_rekkefolge as sortering_rekkefolge_fylke
        ,sum(agg.antall) as antall
     from full_liste
 
@@ -74,6 +77,7 @@ i_alt as (
         full_liste.aar_kvartal
        ,full_liste.nåværende_fylke_nr_navn
        ,full_liste.nåværende_fylkenavn
+       ,full_liste.sortering_rekkefolge
 )
 ,
 
@@ -81,6 +85,7 @@ alle as (
     select
         agg.aar_kvartal
        ,agg.nåværende_fylke_nr_navn
+       ,agg.sortering_rekkefolge_fylke
        ,agg.antall
        ,case when i_alt.antall != 0 then round(agg.antall/i_alt.antall*100,1) else 0 end prosent
     from agg
@@ -91,6 +96,7 @@ alle as (
     select
         aar_kvartal
        ,nåværende_fylke_nr_navn
+       ,sortering_rekkefolge_fylke
        ,antall
        ,100 as prosent
     from i_alt
@@ -100,5 +106,12 @@ select
    ,nåværende_fylke_nr_navn as fylke
    ,antall
    ,prosent
+   ,sortering_rekkefolge_fylke
    ,localtimestamp as lastet_dato
 from alle
+order by
+    aar_kvartal
+   ,nåværende_fylke_nr_navn
+   ,sortering_rekkefolge_fylke
+   ,antall
+   ,prosent
