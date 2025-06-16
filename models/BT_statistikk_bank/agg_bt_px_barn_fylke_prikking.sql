@@ -31,7 +31,7 @@ agg as (
        ,full_liste.nåværende_fylke_nr_navn
        ,full_liste.nåværende_fylkenavn
        ,full_liste.fylke_nivaa
-       ,full_liste.sortering_rekkefolge as sortering_rekkefolge_fylke
+       ,full_liste.sortering as sortering_fylke
        ,case when count(distinct barn.fkb_person1) < 10 then
                   round(count(distinct barn.fkb_person1)+5, -1) --Prikking: Round antall mindre enn 5 oppover til nærmeste tier
              else count(distinct barn.fkb_person1)
@@ -49,7 +49,7 @@ agg as (
        ,full_liste.nåværende_fylke_nr_navn
        ,full_liste.nåværende_fylkenavn
        ,full_liste.fylke_nivaa
-       ,full_liste.sortering_rekkefolge
+       ,full_liste.sortering
 )
 ,
 
@@ -60,7 +60,7 @@ fylke_i_alt as (
        ,full_liste.nåværende_fylke_nr_navn
        ,full_liste.nåværende_fylkenavn
        ,full_liste.fylke_nivaa
-       ,full_liste.sortering_rekkefolge as sortering_rekkefolge_fylke
+       ,full_liste.sortering as sortering_fylke
        ,sum(agg.antall) as antall
     from full_liste
 
@@ -74,7 +74,7 @@ fylke_i_alt as (
        ,full_liste.nåværende_fylke_nr_navn
        ,full_liste.nåværende_fylkenavn
        ,full_liste.fylke_nivaa
-       ,full_liste.sortering_rekkefolge
+       ,full_liste.sortering
 )
 ,
 
@@ -82,7 +82,7 @@ alle as (
     select
         agg.aar_kvartal
        ,agg.nåværende_fylke_nr_navn
-       ,agg.sortering_rekkefolge_fylke
+       ,agg.sortering_fylke
        ,agg.antall
        ,case when fylke_i_alt.antall != 0 then round(agg.antall/fylke_i_alt.antall*100,1) else 0 end prosent
     from agg
@@ -93,7 +93,7 @@ alle as (
     select
         aar_kvartal
        ,nåværende_fylke_nr_navn
-       ,sortering_rekkefolge_fylke
+       ,sortering_fylke
        ,antall
        ,100 as prosent
     from fylke_i_alt
@@ -103,13 +103,13 @@ select
    ,nåværende_fylke_nr_navn as fylke
    ,antall
    ,prosent
-   ,sortering_rekkefolge_fylke
+   ,sortering_fylke as sortering
    ,localtimestamp as lastet_dato
 from alle
 order by
     aar_kvartal
    ,nåværende_fylke_nr_navn
-   ,sortering_rekkefolge_fylke
+   ,sortering_fylke
    ,antall
    ,prosent
 

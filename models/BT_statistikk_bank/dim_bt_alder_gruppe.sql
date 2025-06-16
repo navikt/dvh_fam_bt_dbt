@@ -11,7 +11,7 @@ with gruppe as (
        ,'I alt' as alder_gruppe_besk
        ,'I alt' as utvidet_alder_gruppe_besk
        ,2 as alder_gruppe_nivaa
-       ,0 as sortering_rekkefolge
+       ,0 as sortering
     from dual
 
     union
@@ -21,7 +21,7 @@ with gruppe as (
        ,'20 år og yngre' as alder_gruppe_besk
        ,'Yngre enn 30 år' as utvidet_alder_gruppe_besk
        ,1 as alder_gruppe_nivaa
-       ,1 as sortering_rekkefolge
+       ,1 as sortering
     from dual
 
     union
@@ -31,7 +31,7 @@ with gruppe as (
        ,'21-29 år' as alder_gruppe_besk
        ,'Yngre enn 30 år' as utvidet_alder_gruppe_besk
        ,1 as alder_gruppe_nivaa
-       ,2 as sortering_rekkefolge
+       ,2 as sortering
     from dual
 
     union
@@ -41,7 +41,7 @@ with gruppe as (
        ,'30-39 år' as alder_gruppe_besk
        ,'30-39 år' as utvidet_alder_gruppe_besk
        ,1 as alder_gruppe_nivaa
-       ,3 as sortering_rekkefolge
+       ,3 as sortering
     from dual
 
     union
@@ -51,7 +51,7 @@ with gruppe as (
        ,'40-49 år' as alder_gruppe_besk
        ,'40-49 år' as utvidet_alder_gruppe_besk
        ,1 as alder_gruppe_nivaa
-       ,4 as sortering_rekkefolge
+       ,4 as sortering
     from dual
 
     union
@@ -61,7 +61,7 @@ with gruppe as (
        ,'50-59 år' as alder_gruppe_besk
        ,'50-59 år' as utvidet_alder_gruppe_besk
        ,1 as alder_gruppe_nivaa
-       ,5 as sortering_rekkefolge
+       ,5 as sortering
     from dual
 
     union
@@ -71,7 +71,7 @@ with gruppe as (
        ,'60 år+' as alder_gruppe_besk
        ,'60 år+' as utvidet_alder_gruppe_besk
        ,1 as alder_gruppe_nivaa
-       ,6 as sortering_rekkefolge
+       ,6 as sortering
     from dual
 )
 
@@ -81,5 +81,5 @@ select
    ,alder_fra_og_med
    ,alder_til_og_med
    ,alder_gruppe_nivaa
-   ,sortering_rekkefolge
+   ,sortering
 from gruppe

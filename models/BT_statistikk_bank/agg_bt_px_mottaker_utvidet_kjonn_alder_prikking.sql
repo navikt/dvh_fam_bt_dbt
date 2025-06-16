@@ -16,11 +16,11 @@ full_liste as (
     select
         kjonn.kjonn_besk
        ,kjonn.kjonn_nivaa
-       ,kjonn.sortering_rekkefolge as sortering_rekkefolge_kjonn
+       ,kjonn.sortering as sortering_kjonn
        ,alder_gruppe.alder_fra_og_med
        ,alder_gruppe.alder_til_og_med
        ,alder_gruppe.alder_gruppe_besk
-       ,alder_gruppe.sortering_rekkefolge as sortering_rekkefolge_alder
+       ,alder_gruppe.sortering as sortering_alder
        ,periode.aar_kvartal
        ,periode.forste_dato_i_perioden
        ,periode.siste_dato_i_perioden
@@ -31,7 +31,7 @@ full_liste as (
         select utvidet_alder_gruppe_besk as alder_gruppe_besk
               ,min(alder_fra_og_med) as alder_fra_og_med
               ,max(alder_til_og_med) as alder_til_og_med
-              ,min(sortering_rekkefolge) as sortering_rekkefolge
+              ,min(sortering) as sortering
         from {{ source('bt_statistikk_bank_dvh_fam_bt', 'dim_bt_alder_gruppe') }}
         group by utvidet_alder_gruppe_besk
     ) alder_gruppe
@@ -48,9 +48,9 @@ agg as (
         full_liste.aar_kvartal
        ,full_liste.kjonn_besk
        ,full_liste.kjonn_nivaa
-       ,full_liste.sortering_rekkefolge_kjonn
+       ,full_liste.sortering_kjonn
        ,full_liste.alder_gruppe_besk
-       ,full_liste.sortering_rekkefolge_alder
+       ,full_liste.sortering_alder
        --,count(distinct fk_person1) as antall
        ,case when count(distinct fk_person1) < 10 then
                   round(count(distinct fk_person1)+5, -1) --Prikking: Round antall mindre enn 5 oppover til nærmeste tier
@@ -70,9 +70,9 @@ agg as (
         full_liste.aar_kvartal
        ,full_liste.kjonn_besk
        ,full_liste.kjonn_nivaa
-       ,full_liste.sortering_rekkefolge_kjonn
+       ,full_liste.sortering_kjonn
        ,full_liste.alder_gruppe_besk
-       ,full_liste.sortering_rekkefolge_alder
+       ,full_liste.sortering_alder
 )
 ,
 
@@ -82,9 +82,9 @@ kjonn_i_alt as (
         full_liste.aar_kvartal
        ,full_liste.kjonn_besk
        ,full_liste.kjonn_nivaa
-       ,full_liste.sortering_rekkefolge_kjonn
+       ,full_liste.sortering_kjonn
        ,full_liste.alder_gruppe_besk
-       ,full_liste.sortering_rekkefolge_alder
+       ,full_liste.sortering_alder
        ,sum(agg.antall) as antall
     from full_liste
 
@@ -99,9 +99,9 @@ kjonn_i_alt as (
         full_liste.aar_kvartal
        ,full_liste.kjonn_besk
        ,full_liste.kjonn_nivaa
-       ,full_liste.sortering_rekkefolge_kjonn
+       ,full_liste.sortering_kjonn
        ,full_liste.alder_gruppe_besk
-       ,full_liste.sortering_rekkefolge_alder
+       ,full_liste.sortering_alder
 )
 ,
 
@@ -111,9 +111,9 @@ aldersgruppe_i_alt as (
         full_liste.aar_kvartal
        ,full_liste.kjonn_besk
        ,full_liste.kjonn_nivaa
-       ,full_liste.sortering_rekkefolge_kjonn
+       ,full_liste.sortering_kjonn
        ,full_liste.alder_gruppe_besk
-       ,full_liste.sortering_rekkefolge_alder
+       ,full_liste.sortering_alder
        ,sum(agg.antall) as antall
     from full_liste
 
@@ -128,9 +128,9 @@ aldersgruppe_i_alt as (
         full_liste.aar_kvartal
        ,full_liste.kjonn_besk
        ,full_liste.kjonn_nivaa
-       ,full_liste.sortering_rekkefolge_kjonn
+       ,full_liste.sortering_kjonn
        ,full_liste.alder_gruppe_besk
-       ,full_liste.sortering_rekkefolge_alder
+       ,full_liste.sortering_alder
 )
 ,
 
@@ -140,9 +140,9 @@ i_alt as (
         full_liste.aar_kvartal
        ,full_liste.kjonn_besk
        ,full_liste.kjonn_nivaa
-       ,full_liste.sortering_rekkefolge_kjonn
+       ,full_liste.sortering_kjonn
        ,full_liste.alder_gruppe_besk
-       ,full_liste.sortering_rekkefolge_alder
+       ,full_liste.sortering_alder
        ,sum(agg.antall) as antall
     from full_liste
 
@@ -156,9 +156,9 @@ i_alt as (
         full_liste.aar_kvartal
        ,full_liste.kjonn_besk
        ,full_liste.kjonn_nivaa
-       ,full_liste.sortering_rekkefolge_kjonn
+       ,full_liste.sortering_kjonn
        ,full_liste.alder_gruppe_besk
-       ,full_liste.sortering_rekkefolge_alder
+       ,full_liste.sortering_alder
 )
 ,
 
@@ -167,9 +167,9 @@ alle as (
         agg.aar_kvartal
        ,agg.kjonn_besk
        ,agg.kjonn_nivaa
-       ,agg.sortering_rekkefolge_kjonn
+       ,agg.sortering_kjonn
        ,agg.alder_gruppe_besk
-       ,agg.sortering_rekkefolge_alder
+       ,agg.sortering_alder
        ,agg.antall
        ,case when aldersgruppe_i_alt.antall != 0 then round(agg.antall/aldersgruppe_i_alt.antall*100,1) else 0 end prosent
     from agg
@@ -182,9 +182,9 @@ alle as (
         kjonn_i_alt.aar_kvartal
        ,kjonn_i_alt.kjonn_besk
        ,kjonn_i_alt.kjonn_nivaa
-       ,kjonn_i_alt.sortering_rekkefolge_kjonn
+       ,kjonn_i_alt.sortering_kjonn
        ,kjonn_i_alt.alder_gruppe_besk
-       ,kjonn_i_alt.sortering_rekkefolge_alder
+       ,kjonn_i_alt.sortering_alder
        ,kjonn_i_alt.antall
        ,case when i_alt.antall != 0 then round(kjonn_i_alt.antall/i_alt.antall*100,1) else 0 end prosent
     from kjonn_i_alt
@@ -196,9 +196,9 @@ alle as (
         aar_kvartal
        ,kjonn_besk
        ,kjonn_nivaa
-       ,sortering_rekkefolge_kjonn
+       ,sortering_kjonn
        ,alder_gruppe_besk
-       ,sortering_rekkefolge_alder
+       ,sortering_alder
        ,antall
        ,100 as prosent
     from aldersgruppe_i_alt
@@ -208,9 +208,9 @@ alle as (
         aar_kvartal
        ,kjonn_besk
        ,kjonn_nivaa
-       ,sortering_rekkefolge_kjonn
+       ,sortering_kjonn
        ,alder_gruppe_besk
-       ,sortering_rekkefolge_alder
+       ,sortering_alder
        ,antall
        ,100 as prosent
     from i_alt
@@ -221,8 +221,7 @@ select
    ,alder_gruppe_besk as aldersgruppe
    ,antall
    ,prosent
-   ,sortering_rekkefolge_kjonn
-   ,sortering_rekkefolge_alder
+   ,sortering_kjonn||sortering_alder as sortering
    ,localtimestamp as lastet_dato
 from alle
 order by
@@ -231,5 +230,5 @@ order by
    ,alder_gruppe_besk
    ,antall
    ,prosent
-   ,sortering_rekkefolge_kjonn
-   ,sortering_rekkefolge_alder
+   ,sortering_kjonn
+   ,sortering_alder
