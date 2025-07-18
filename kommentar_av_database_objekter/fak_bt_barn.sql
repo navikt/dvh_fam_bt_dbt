@@ -1,0 +1,24 @@
+comment on column dvh_fam_bt.fak_bt_barn.pk_bt_barn is '#NAVN PrimærNøkkel #INNHOLD Primær nøkkel til FAM_BT_BARN';
+comment on column dvh_fam_bt.fak_bt_barn.fkb_person1 is '#NAVN Barns FK_PERSON1 #INNHOLD FK_PERSON1 for barnet';
+comment on column dvh_fam_bt.fak_bt_barn.fk_dim_person_barn is '#NAVN Fremmednøkkel #INNHOLD Fremmednøkkel til DIM_PERSON for barnet.';
+comment on column dvh_fam_bt.fak_bt_barn.fk_person1 is '#NAVN Mottakers FK_PERSON1 #INNHOLD FK_PERSON1 for aktuell person som mottar barnetrygd for barnet';
+comment on column dvh_fam_bt.fak_bt_barn.fodsel_aar is '#NAVN Fødselsår #INNHOLD Fødselsår for mottakeren';
+comment on column dvh_fam_bt.fak_bt_barn.fodsel_mnd is '#NAVN Fødselsmåned #INNHOLD Fødselsmåned for mottakeren';
+comment on column dvh_fam_bt.fak_bt_barn.kjonn is '#NAVN Kjønn #INNHOLD Mottakerens kjønn';
+comment on column dvh_fam_bt.fak_bt_barn.fodsel_aar_barn is '#NAVN Barns fødselsår #INNHOLD Fødselsår for barn';
+comment on column dvh_fam_bt.fak_bt_barn.fodsel_mnd_barn is '#NAVN Barns fødselsmåned #INNHOLD Fødselsmåned for barn';
+comment on column dvh_fam_bt.fak_bt_barn.kjonn_barn is '#NAVN Barns kjønn #INNHOLD Barnets kjønn';
+comment on column dvh_fam_bt.fak_bt_barn.stat_aarmnd is '#NAVN Statistikk måned #INNHOLD Statistikk måned YYYYMM';
+comment on column dvh_fam_bt.fak_bt_barn.delingsprosent_ytelse is '#NAVN Delingsprosent #INNHOLD Delingsproent. Enten 0 eller 50.';
+comment on column dvh_fam_bt.fak_bt_barn.fk_bt_kompetanse_perioder is '#NAVN Fremmednøkkel #INNHOLD Fremmednøkkel til BT_KOMPETANSE_PERIODER';
+comment on column dvh_fam_bt.fak_bt_barn.kilde is '#NAVN Kilde #INNHOLD Kildesystem, BT eller INFOTRYGD';
+comment on column dvh_fam_bt.fak_bt_barn.annenforelder_aktivitet is '#NAVN AnnenForeldersAktivitet #INNHOLD Annen forelders aktivitet';
+comment on column dvh_fam_bt.fak_bt_barn.annenforelder_aktivitetsland is '#NAVN AnnenForeldersAktivitetsLand #INNHOLD Annen forelders aktivitetsland';
+comment on column dvh_fam_bt.fak_bt_barn.kompetanse_resultat is '#NAVN KompetanseResultat #INNHOLD Resultat for EØS sak. Enten NORGE_ER_PRIMÆRLAND, NORGE_ER_SEKUNDÆRLAND eller TO_PRIMÆRLAND';
+comment on column dvh_fam_bt.fak_bt_barn.barnets_bostedsland is '#NAVN BarnetsBostedland #INNHOLD Barnets bostedsland';
+comment on column dvh_fam_bt.fak_bt_barn.sokersaktivitet is '#NAVN SøkersAktivitet #INNHOLD Søkers/mottakers altivitet';
+comment on column dvh_fam_bt.fak_bt_barn.belop is '#NAVN Beløp #INNHOLD Beløp utbetalt postert denne periode for aktuelt barn, innkludert etterbetalinger';
+comment on column dvh_fam_bt.fak_bt_barn.belope is '#NAVN Etterbetalt beløp #INNHOLD Beløp etterbetalt for aktuelt aktelt barn postert denne periode';
+comment on column dvh_fam_bt.fak_bt_barn.fk_dim_person_mottaker is '#NAVN Fremmednøkkel #INNHOLD Fremmednøkkel til DIM_PERSON for mottakeren.';
+
+comment on table dvh_fam_bt.fak_bt_barn is '#NAVN fak_bt_barn #INNHOLD Inneholder statistikk over barnetrygd.';
