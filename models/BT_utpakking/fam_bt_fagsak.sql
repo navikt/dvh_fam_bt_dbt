@@ -80,7 +80,7 @@ select
    ,kildesystem
    ,lastet_dato
    ,behandling_aarsak
-   ,siste_iverksatte_behandlingsid
    ,fagsak_type
    ,kafka_mottatt_dato
+   ,siste_iverksatte_behandlingsid
 from final
