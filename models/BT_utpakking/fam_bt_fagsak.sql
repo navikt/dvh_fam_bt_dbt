@@ -16,18 +16,18 @@ pre_final as (
     from barnetrygd_meta_data,
     json_table(melding, '$'
         columns (
-            behandling_opprinnelse varchar2(255) path '$.behandlingOpprinnelse'
-           ,behandling_type        varchar2(255) path '$.behandlingTypeV2'
-           ,fagsak_id              varchar2(255) path '$.fagsakId'
-           ,behandlings_id         varchar2(255) path '$.behandlingsId'
-           ,fagsak_type            varchar2(255) path '$.fagsakType'
-           ,tidspunkt_vedtak       varchar2(255) path '$.tidspunktVedtak'
-           ,enslig_forsørger       varchar2(255) path '$.ensligForsørger'
-           ,kategori               varchar2(255) path '$.kategoriV2'
-           ,underkategori          varchar2(255) path '$.underkategoriV2'
-           ,funksjonell_id         varchar2(255) path '$.funksjonellId'
-           ,person_ident           varchar2(255) path '$.personV2[*].personIdent'
-           ,behandling_årsak       varchar2(255) path '$.behandlingÅrsakV2'
+            behandling_opprinnelse         varchar2(255) path '$.behandlingOpprinnelse'
+           ,behandling_type                varchar2(255) path '$.behandlingTypeV2'
+           ,fagsak_id                      varchar2(255) path '$.fagsakId'
+           ,behandlings_id                 varchar2(255) path '$.behandlingsId'
+           ,fagsak_type                    varchar2(255) path '$.fagsakType'
+           ,tidspunkt_vedtak               varchar2(255) path '$.tidspunktVedtak'
+           ,enslig_forsorger               varchar2(255) path '$.ensligForsørger'
+           ,kategori                       varchar2(255) path '$.kategoriV2'
+           ,funksjonell_id                 varchar2(255) path '$.funksjonellId'
+           ,person_ident                   varchar2(255) path '$.personV2[*].personIdent'
+           ,behandling_aarsak              varchar2(255) path '$.behandlingÅrsakV2'
+           ,siste_iverksatte_behandlingsid varchar2(255) path '$.sisteIverksatteBehandlingId'
         )
     ) j
 ),
@@ -44,15 +44,15 @@ final as (
             else cast(to_timestamp_tz(tidspunkt_vedtak, 'FXYYYY-MM-DD"T"HH24:MI:SS.FXFF3TZH:TZM') at time zone 'Europe/Belgrade' as timestamp)
         end tidspunkt_vedtak
        ,case
-            when p.enslig_forsørger = 'false' then '0'
+            when p.enslig_forsorger = 'false' then '0'
             else '1'
-        end as enslig_forsørger
+        end as enslig_forsorger
        ,p.kategori
-       ,p.underkategori
        ,'BT' as kildesystem
        ,sysdate as lastet_dato
        ,p.funksjonell_id
-       ,p.behandling_årsak
+       ,p.behandling_aarsak
+       ,p.siste_iverksatte_behandlingsid
        ,p.person_ident
        ,p.kafka_offset
        ,p.kafka_mottatt_dato
@@ -74,13 +74,13 @@ select
    ,funksjonell_id
    ,behandlings_id
    ,tidspunkt_vedtak
-   ,enslig_forsørger
+   ,enslig_forsorger
    ,kategori
-   ,underkategori
    ,kafka_offset
    ,kildesystem
    ,lastet_dato
-   ,behandling_årsak
+   ,behandling_aarsak
+   ,siste_iverksatte_behandlingsid
    ,fagsak_type
    ,kafka_mottatt_dato
 from final
