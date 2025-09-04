@@ -6,7 +6,7 @@ dvh_fam_bt_dbt:
       user: "{{env_var('DBT_ENV_SECRET_USER')}}"
       pass: "{{env_var('DBT_ENV_SECRET_PASS')}}"
       protocol: tcp
-      host: dmv34-scan.adeo.no
+      host: dmv04-scan.adeo.no
       port: 1521
       service: ccdwhu1_ha
       schema: "{{env_var('DBT_DB_SCHEMA')}}"
@@ -20,7 +20,7 @@ dvh_fam_bt_dbt:
       user: "{{env_var('DBT_ENV_SECRET_USER')}}"
       pass: "{{env_var('DBT_ENV_SECRET_PASS')}}"
       protocol: tcp
-      host: dmv34-scan.adeo.no
+      host: dmv04-scan.adeo.no
       port: 1521
       service: dwhr_ha
       schema: "{{env_var('DBT_DB_SCHEMA')}}"
