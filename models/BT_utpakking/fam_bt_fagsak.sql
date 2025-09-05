@@ -27,7 +27,7 @@ pre_final as (
            ,funksjonell_id                 varchar2(255) path '$.funksjonellId'
            ,person_ident                   varchar2(255) path '$.personV2[*].personIdent'
            ,behandling_aarsak              varchar2(255) path '$.behandlingÅrsakV2'
-           ,siste_iverksatte_behandlingsid varchar2(255) path '$.sisteIverksatteBehandlingId'
+           ,siste_iverksatte_behandlingsid NUMBER(38,0) path '$.sisteIverksatteBehandlingId'
         )
     ) j
 ),
