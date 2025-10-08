@@ -48,6 +48,8 @@ comment on column dvh_fam_bt.fam_bt_mottaker.kompetanse_resultat is '#NAVN EØS 
 comment on column dvh_fam_bt.fam_bt_mottaker.barnets_bostedsland is '#NAVN BarnetsBostedland #INNHOLD Barnets bostedslannd -EØS';
 comment on column dvh_fam_bt.fam_bt_mottaker.mottaker_getitype is '#NAVN GetiType #INNHOLD kommune, bydel, utland eller, udefinert';
 comment on column dvh_fam_bt.fam_bt_mottaker.mottaker_bosted_land is '#NAVN MottakersBostedland #INNHOLD Mottakers bostedsland';
-comment on column dvh_fam_bt.fam_bt_mottaker.belop_smabarnstillegg is '#NAVN Beløp #INNHOLD Småbarnstillegg';
+comment on column dvh_fam_bt.fam_bt_mottaker.belop_smabarnstillegg is '#NAVN Småbarnstillegg #INNHOLD Småbarnstillegg';
+comment on column dvh_fam_bt.fam_bt_mottaker.belop_finnmark is '#NAVN Finnmarkstillegg #INNHOLD Finnmarkstillegg';
+comment on column dvh_fam_bt.fam_bt_mottaker.belop_svalbard is '#NAVN Svalbardstillegg #INNHOLD Svalbardstillegg';
 
 comment on table dvh_fam_bt.fam_bt_mottaker is '#NAVN FAM_BT_MOTTAKER #INNHOLD Inneholder statistikk over barnetrygd.';
