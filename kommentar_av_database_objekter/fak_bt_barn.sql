@@ -20,5 +20,7 @@ comment on column dvh_fam_bt.fak_bt_barn.sokersaktivitet is '#NAVN SøkersAktivi
 comment on column dvh_fam_bt.fak_bt_barn.belop is '#NAVN Beløp #INNHOLD Beløp utbetalt postert denne periode for aktuelt barn, innkludert etterbetalinger';
 comment on column dvh_fam_bt.fak_bt_barn.belope is '#NAVN Etterbetalt beløp #INNHOLD Beløp etterbetalt for aktuelt aktelt barn postert denne periode';
 comment on column dvh_fam_bt.fak_bt_barn.fk_dim_person_mottaker is '#NAVN Fremmednøkkel #INNHOLD Fremmednøkkel til DIM_PERSON for mottakeren.';
+comment on column dvh_fam_bt.fam_bt_barn.belop_svalbard	is '#NAVN Svalbardstillegg #INNHOLD Svalbardstillegg';
+comment on column dvh_fam_bt.fam_bt_barn.belop_finnmark	is '#NAVN Finnmarkstillegg #INNHOLD Finnmarkstillegg';
 
 comment on table dvh_fam_bt.fak_bt_barn is '#NAVN fak_bt_barn #INNHOLD Inneholder statistikk over barnetrygd.';

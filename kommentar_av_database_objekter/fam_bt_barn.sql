@@ -27,5 +27,8 @@ comment on column dvh_fam_bt.fam_bt_barn.eokland is '#NAVN Eokland #INNHOLD Komp
 comment on column dvh_fam_bt.fam_bt_barn.eodland is '#NAVN Eodland #INNHOLD DIfferanse land for EØS sak';
 comment on column dvh_fam_bt.fam_bt_barn.fk_dim_person_mottaker is '#NAVN Fremmednøkkel #INNHOLD Fremmednøkkel til DIM_PERSON for mottakeren.';
 comment on column dvh_fam_bt.fam_bt_barn.alder_barn is '#NAVN AlderBarn #INNHOLD Alder av barnet i statistikk periode.';
+comment on column dvh_fam_bt.fam_bt_barn.belop_svalbard	is '#NAVN Svalbardstillegg #INNHOLD Svalbardstillegg';
+comment on column dvh_fam_bt.fam_bt_barn.belop_finnmark	is '#NAVN Finnmarkstillegg #INNHOLD Finnmarkstillegg';
+
 
 comment on table dvh_fam_bt.fam_bt_barn is '#NAVN FAM_BT_BARN #INNHOLD Inneholder statistikk over barnetrygd.';
